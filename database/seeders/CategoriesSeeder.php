@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Categories;
+use Illuminate\Support\Facades\DB;
+
 
 class CategoriesSeeder extends Seeder
 {
@@ -13,6 +15,8 @@ class CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('product_categories')->truncate();
+
         Categories::insert(
             [
                 [
