@@ -12,7 +12,9 @@
                     <a href="{{ URL::to('/category/'.$category->slug) }}" class="card text-decoration-none">
                         <div class="card category-card text-center h-100 py-3 border-0 shadow-sm">
                             <div class="mx-auto mb-2" style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:50%;">
-                                <img src="{{ $category->image }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;">
+
+                                {{-- <img src="{{ $category->image }}" alt="{{ $category->name }}" style="width:36px;height:36px;object-fit:contain;"> --}}
                             </div>
                             <div class="card-body p-2">
                                 <h6 class="card-title mb-1 text-dark">{{ $category->name }}</h6>
@@ -34,7 +36,9 @@
             @forelse($products as $product)
                 <div class="col-md-3 mb-4">
                     <div class="card product-card h-100 shadow-sm">
-                        <img src="{{ $product->image_url ? $product->image_url : 'https://via.placeholder.com/350x200?text=No+Image' }}" class="card-img-top" alt="{{ $product->name }}">
+                        <img src="{{ $product->image_url ? asset('storage/' . $product->image_url) : 'https://via.placeholder.com/350x200?text=No+Image' }}" class="card-img-top" alt="{{ $product->name }}">
+
+                        {{-- <img src="{{ $product->image_url ? $product->image_url : 'https://via.placeholder.com/350x200?text=No+Image' }}" class="card-img-top" alt="{{ $product->name }}"> --}}
 
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ $product->name }}</h5>
