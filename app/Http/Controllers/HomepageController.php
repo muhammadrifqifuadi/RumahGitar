@@ -27,13 +27,13 @@ class HomepageController extends Controller
     public function index()
     {
         $categories = Categories::latest()->take(4)->get();
-        $products = Product::where('is_active', true)->latest()->take(20);
+        $products = Product::where('is_active', true)->latest()->take(20)->get();
         // $products = Product::paginate(20);
         
-return view("theme.{$this->themeFolder}.homepage", [
-            'title'=>'Homepage',
-            'categories' => $categories,
-            'products'=>$products,
+    return view("theme.{$this->themeFolder}.homepage", [
+            'title' =>   'Homepage',
+            'categories' =>     $categories,
+            'products'=>    $products,
         ]);
     }
 
