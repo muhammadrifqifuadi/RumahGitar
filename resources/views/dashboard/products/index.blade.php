@@ -71,6 +71,7 @@
                                 @if($product->image_url)
                                     <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded">
 
+
                                     {{-- <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded"> --}}
                                 @else
                                     <div class="h-10 w-10 bg-gray-200 flex items-center justify-center rounded">
