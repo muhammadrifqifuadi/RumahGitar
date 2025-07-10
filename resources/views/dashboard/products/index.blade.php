@@ -69,8 +69,7 @@
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
                                 @if($product->image_url)
-                                    <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded">
-
+                                    <img src="{{ $product->image_url ? asset('storage/' . $product->image_url) : 'https://via.placeholder.com/40' }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded">
 
                                     {{-- <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-10 w-10 object-cover rounded"> --}}
                                 @else
