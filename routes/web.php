@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 
 use App\Http\Controllers\OrderController;
 
@@ -55,6 +56,8 @@ Route::group(['prefix'=>'customer'], function(){
     });
 });
 
+Route::view('/contact', 'theme.default.contact')->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 
 Route::group(['prefix'=>'dashboard','middleware'=>['auth','verified']], function(){

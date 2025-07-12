@@ -1,7 +1,7 @@
 <x-layout>
-    <div class="d-flex justify-content-center align-items-center " style="min-height: 80vh;">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
         <div class="card shadow-sm p-4" style="min-width: 350px; max-width: 400px; width: 100%;">
-            <h3 class="mb-4 text-center">Register</h3>
+            <h3 class="mb-4 text-center" style="color: #800000;">Register</h3>
 
             @if(session('errorMessage'))
                 <div class="alert alert-danger">
@@ -21,11 +21,11 @@
                         value="{{ old('name') }}" 
                         required
                         autofocus>
-
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
                     <input 
@@ -34,45 +34,58 @@
                         id="email" 
                         value="{{ old('email') }}" 
                         required
-                        name="email" >
-
+                        name="email">
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input 
                         type="password" 
                         class="form-control @error('password') is-invalid @enderror"  
                         id="password" 
-                        value="{{ old('password') }}" 
                         required
-                        name="password" >
-
+                        name="password">
                     @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <div class="mb-3">
                     <label for="password_confirmation" class="form-label">Confirm Password</label>
                     <input 
                         type="password" 
                         class="form-control @error('password_confirmation') is-invalid @enderror"   
                         id="password_confirmation" 
-                        value="{{ old('password_confirmation') }}"
                         required 
-                        name="password_confirmation" >
-
+                        name="password_confirmation">
                     @error('password_confirmation')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Register</button>
+
+                <button type="submit" class="btn w-100 text-white" style="background-color: #800000;">Register</button>
             </form>
+
             <div class="mt-3 text-center">
-                <small>Sudah memiliki akun? <a href="{{ route('customer.login') }}">Login</a></small>
+                <small>
+                    Sudah memiliki akun? 
+                    <a href="{{ route('customer.login') }}" style="color: #d4af37;">Login</a>
+                </small>
             </div>
         </div>
     </div>
+
+    <style>
+        button.btn:hover {
+            background-color: #a52a2a !important;
+            color: #fff;
+        }
+
+        a:hover {
+            color: #b8860b !important;
+        }
+    </style>
 </x-layout>

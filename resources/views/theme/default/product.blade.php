@@ -88,7 +88,7 @@
             @endforeach 
             @if($relatedProducts->isEmpty())
                 <div class="col">
-                    <div class="alert alert-info">Tidak ada produk terkait.</div>
+                    <div class="alert alert-warning">Tidak ada produk terkait.</div>
                 </div>
             @endif
         </div>
