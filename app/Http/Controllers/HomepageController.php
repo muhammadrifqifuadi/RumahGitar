@@ -121,8 +121,18 @@ class HomepageController extends Controller
 
     public function checkout()
     {
-        return view($this->themeFolder.'.checkout',[
-            'title'=>'Checkout'
+        $cart = Cart::query()
+            ->with([
+                'items',
+                'items.itemable'
+            ])
+            ->where('user_id', auth()->guard('customer')->user()->id)
+            ->first();
+
+        return view($this->themeFolder.'.checkout', [
+            'title' => 'Checkout',
+            'cart' => $cart,
         ]);
     }
+
 }

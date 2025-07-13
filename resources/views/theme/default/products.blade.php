@@ -23,7 +23,7 @@
                             <div class="mt-auto">
                                 <span class="fw-bold" style="color: #d4af37;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                                 <a href="{{ route('product.show', $product->slug) }}" class="btn btn-sm float-end"
-                                   style="border: 1px solid #800000; color: #800000;">Lihat Detail</a>
+                                   style="border: 1px solid #800000; color: #d4af37;">Lihat Detail</a>
                             </div>
                         </div>
                     </div>

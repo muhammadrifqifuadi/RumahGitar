@@ -14,10 +14,10 @@
                              style="transition: transform 0.3s;">
 
                             <div class="mx-auto mb-2"
-                                 style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:50%; border: 2px solid #800000;">
-                                <img src="{{ $category->image ? asset('storage/' . $category->image) : 'https://via.placeholder.com/36x36?text=No+Image' }}"
-                                     alt="{{ $category->name }}"
-                                     style="width:36px;height:36px;object-fit:contain;">
+                            style="width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;border-radius:50%; border: 2px solid #800000;">
+                            <img src="{{ $category->image ? asset('storage/' . $category->image) : 'https://via.placeholder.com/36x36?text=No+Image' }}"
+                            alt="{{ $category->name }}"
+                            style="max-width: 100%; max-height: 100%; object-fit: contain;">
                             </div>
 
                             <div class="card-body p-2">

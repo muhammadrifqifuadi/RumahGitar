@@ -21,7 +21,15 @@
                         <div class="card-body p-3">
                             @forelse($cart->items as $item)
                                 <div class="cart-item d-flex align-items-center mb-3 border-bottom pb-3">
-                                    <img src="{{ $item->itemable->image_url ? asset('storage/' . $item->itemable->image_url) : 'https://via.placeholder.com/80?text=Product' }}" class="cart-img me-3 rounded" alt="{{ $item->itemable->name }}">
+                                <img src="{{ $item->itemable->image_url 
+                                ? asset('storage/' . $item->itemable->image_url) 
+                                : 'https://via.placeholder.com/80?text=Product' }}" 
+                                alt="{{ $item->itemable->name }}"
+                                class="img-fluid rounded me-3"
+                                style="max-height: 80px; width: auto; object-fit: contain;"
+                                onerror="this.onerror=null;this.src='https://via.placeholder.com/80?text=Product';"
+                                >
+
 
                                     <div class="flex-grow-1">
                                         <h5 class="cart-item-name mb-1" style="color: #800000;">{{ $item->itemable->name }}</h5>
@@ -57,7 +65,9 @@
                             @endforelse
                         </div>
                     </div>
-                    <a href="{{ URL::to('/products') }}" class="btn btn-sm lihat-semua-btn mt-2">
+
+                    <!-- Tombol Lanjut Belanja -->
+                    <a href="{{ URL::to('/products') }}" class="btn btn-sm btn-maroon-outline mt-2">
                         <i class="bi bi-arrow-left"></i> Lanjut Belanja
                     </a>
                 </div>
@@ -89,14 +99,15 @@
         @endif
     </div>
 
+    <!-- Custom Maroon + Gold Button -->
     <style>
-        .lihat-semua-btn {
+        .btn-maroon-outline {
             border: 1px solid #800000;
             color: #d4af37;
             background-color: transparent;
         }
 
-        .lihat-semua-btn:hover {
+        .btn-maroon-outline:hover {
             background-color: #800000 !important;
             color: #fff !important;
             border-color: #800000;

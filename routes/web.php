@@ -11,6 +11,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 
 use App\Http\Controllers\ApiController;
@@ -24,6 +25,9 @@ Route::get('category/{slug}', [HomepageController::class, 'category']);
 
 Route::get('cart', [HomepageController::class, 'cart'])->name('cart.index');
 Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
+Route::view('/contact', 'theme.default.contact')->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::group(['middleware'=>['is_customer_login']], function(){
     Route::controller(CartController::class)->group(function () {
@@ -55,9 +59,6 @@ Route::group(['prefix'=>'customer'], function(){
 
     });
 });
-
-Route::view('/contact', 'theme.default.contact')->name('contact');
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 
 Route::group(['prefix'=>'dashboard','middleware'=>['auth','verified']], function(){
