@@ -14,7 +14,7 @@ Proyek ini merupakan aplikasi ecommerce sederhana yang dikembangkan sebagai baha
 
 1. Clone repository ini:
     ```bash
-    git clone https://github.com/jamalapriadi/phb_ecommerce.git
+    git clone https://github.com/muhammadrifqifuadi/RumahGitar.git
     cd phb_ecommerce
     ```
 2. Jalankan perintah berikut untuk menginstall dependency PHP:
