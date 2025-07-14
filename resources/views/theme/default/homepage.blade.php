@@ -1,6 +1,32 @@
 <x-layout>
     <x-slot name="title">Homepage</x-slot>
 
+    {{-- BANNER SLIDER --}}
+    <div id="bannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner rounded shadow">
+
+            <div class="carousel-item active">
+                <img src="{{ asset('theme/default/images/banner1.png') }}" class="d-block w-100" alt="Banner 1">
+            </div>
+
+            <div class="carousel-item">
+                <img src="{{ asset('theme/default/images/banner2.png') }}" class="d-block w-100" alt="Banner 2">
+            </div>
+
+            <div class="carousel-item">
+                <img src="{{ asset('theme/default/images/banner3.png') }}" class="d-block w-100" alt="Banner 3">
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
     {{-- KATEGORI --}}
     <div class="container py-3">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -84,6 +110,11 @@
             background-color: #800000 !important;
             color: #fff !important;
             border-color: #800000;
+        }
+
+        .carousel-item img {
+            max-height: 400px;
+            object-fit: cover;
         }
     </style>
 </x-layout>

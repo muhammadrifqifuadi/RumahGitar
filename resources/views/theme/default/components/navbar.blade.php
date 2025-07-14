@@ -1,7 +1,10 @@
 <div>
     <nav class="navbar navbar-expand-lg p-3" style="background: linear-gradient(90deg, #800000 0%, #a52a2a 100%);">
         <div class="container">
-            <a class="navbar-brand text-white fw-bold" href="/">WARUNG GITAR</a>
+        <a class="navbar-brand text-white fw-bold d-flex align-items-center gap-2" href="/">
+        <img src="{{ asset('theme/default/images/logo-warung-gitar-1.png') }}" alt="Logo" style="height: 32px;">
+        WARUNG GITAR
+        </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
