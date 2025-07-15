@@ -22,12 +22,16 @@ Route::get('products', [HomepageController::class, 'products']);
 Route::get('product/{slug}', [HomepageController::class, 'product'])->name('product.show');
 Route::get('categories',[HomepageController::class, 'categories']);
 Route::get('category/{slug}', [HomepageController::class, 'category']);
-
 Route::get('cart', [HomepageController::class, 'cart'])->name('cart.index');
-Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
 Route::view('/contact', 'theme.default.contact')->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+Route::get('/checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
+Route::post('/checkout', [HomepageController::class, 'processCheckout'])->name('checkout.store');
+Route::get('/checkout/success', [HomepageController::class, 'checkoutSuccess'])->name('checkout.success');
+
 
 Route::group(['middleware'=>['is_customer_login']], function(){
     Route::controller(CartController::class)->group(function () {

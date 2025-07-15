@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\Categories;
 use App\Models\Product;
-
 use App\Models\Theme;
 use \Binafy\LaravelCart\Models\Cart;
 
@@ -17,11 +16,7 @@ class HomepageController extends Controller
     public function __construct()
     {
         $theme = Theme::where('status', 'active')->first();
-        if ($theme) {
-            $this->themeFolder = $theme->folder;
-        } else {
-            $this->themeFolder = 'web';
-        }
+        $this->themeFolder = $theme ? $theme->folder : 'web';
     }
 
     public function index()
@@ -29,17 +24,15 @@ class HomepageController extends Controller
         $categories = Categories::latest()->take(4)->get();
         $products = Product::paginate(20);
         
-        return view($this->themeFolder.'.homepage',[
+        return view($this->themeFolder.'.homepage', [
             'categories' => $categories,
-            'products'=>$products,
-            'title'=>'Homepage'
+            'products' => $products,
+            'title' => 'Homepage'
         ]);
     }
 
     public function products(Request $request)
     {
-        $title = "Products";
-
         $query = Product::query();
 
         if ($request->has('search') && $request->search) {
@@ -48,18 +41,15 @@ class HomepageController extends Controller
 
         $products = $query->paginate(20);
 
-        return view($this->themeFolder.'.products',[
-            'title'=>$title,
-            'products' => $products,
+        return view($this->themeFolder.'.products', [
+            'title' => 'Products',
+            'products' => $products
         ]);
     }
 
-    public function product($slug){
-        $product = Product::whereSlug($slug)->first();
-
-        if (!$product) {
-            return abort(404);
-        }
+    public function product($slug)
+    {
+        $product = Product::whereSlug($slug)->firstOrFail();
 
         $relatedProducts = Product::where('product_category_id', $product->product_category_id)
             ->where('id', '!=', $product->id)
@@ -69,7 +59,7 @@ class HomepageController extends Controller
         return view($this->themeFolder.'.product', [
             'slug' => $slug,
             'product' => $product,
-            'relatedProducts' => $relatedProducts,
+            'relatedProducts' => $relatedProducts
         ]);
     }
 
@@ -77,62 +67,105 @@ class HomepageController extends Controller
     {
         $categories = Categories::latest()->paginate(20);
 
-        return view($this->themeFolder.'.categories',[
-            'title'=>'Categories',
-            'categories' => $categories,
+        return view($this->themeFolder.'.categories', [
+            'title' => 'Categories',
+            'categories' => $categories
         ]);
     }
 
     public function category($slug)
     {
-        $category = Categories::whereSlug($slug)->first();
+        $category = Categories::whereSlug($slug)->firstOrFail();
 
-        if($category){
-            $products = Product::where('product_category_id',$category->id)->paginate(20);
+        $products = Product::where('product_category_id', $category->id)->paginate(20);
 
-            return view($this->themeFolder.'.category_by_slug', [
-                'slug' => $slug, 
-                'category' => $category,
-                'products' => $products,
-            ]);
-        }else{
-            return abort(404);
-        }
+        return view($this->themeFolder.'.category_by_slug', [
+            'slug' => $slug,
+            'category' => $category,
+            'products' => $products
+        ]);
     }
 
     public function cart()
     {
         $cart = Cart::query()
-            ->with(
-                [
-                    'items',
-                    'items.itemable'
-                ]
-            )
+            ->with(['items', 'items.itemable'])
             ->where('user_id', auth()->guard('customer')->user()->id)
             ->first();
-        
 
-        return view($this->themeFolder.'.cart',[
-            'title'=>'Cart',
-            'cart' => $cart,
+        return view($this->themeFolder.'.cart', [
+            'title' => 'Cart',
+            'cart' => $cart
         ]);
     }
 
+
+    
     public function checkout()
+{
+    $cart = Cart::query()
+        ->with(['items', 'items.itemable'])
+        ->where('user_id', auth()->guard('customer')->user()->id ?? 0)
+        ->first();
+
+    if (!$cart || $cart->items->isEmpty()) {
+        return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
+    }
+
+    return view($this->themeFolder.'.checkout', [
+        'title' => 'Checkout',
+        'cart' => $cart
+    ]);
+}
+
+
+    public function processCheckout(Request $request)
     {
         $cart = Cart::query()
-            ->with([
-                'items',
-                'items.itemable'
-            ])
+            ->with(['items', 'items.itemable'])
             ->where('user_id', auth()->guard('customer')->user()->id)
             ->first();
 
-        return view($this->themeFolder.'.checkout', [
-            'title' => 'Checkout',
-            'cart' => $cart,
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang kosong, tidak bisa checkout.');
+        }
+
+        $request->validate([
+            'fullname' => 'required|string|max:100',
+            'email' => 'required|email',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'cardName' => 'required',
+            'cardNumber' => 'required',
+            'cardExp' => 'required',
+            'cardCvv' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $cart = Cart::query()
+            ->with(['items', 'items.itemable'])
+            ->where('user_id', auth()->guard('customer')->user()->id)
+            ->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
+        }
+
+       
+        $cart->items()->delete();
+        $cart->delete();
+
+        return redirect()->route('checkout.success')->with('success', 'Pesanan berhasil diproses!');
+    }
+        public function checkoutSuccess()
+        {
+        return view($this->themeFolder.'.checkout_success', [
+            'title' => 'Pembayaran Berhasil'
         ]);
     }
-
 }
