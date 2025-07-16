@@ -15,9 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ApiController;
 
 /*
-|--------------------------------------------------------------------------
 | Public Routes
-|--------------------------------------------------------------------------
 */
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 
