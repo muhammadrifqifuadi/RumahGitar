@@ -159,5 +159,5 @@
             methodSelect.addEventListener('change', toggleCardFields);
             toggleCardFields();
         });
-    </script>
+    </script>   
 </x-layout>

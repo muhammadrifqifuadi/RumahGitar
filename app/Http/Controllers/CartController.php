@@ -11,20 +11,18 @@ class CartController extends Controller
 {
     private $cart;
 
-    public function __construct(){
-        $this->cart = Cart::query()->firstOrCreate(
-            [
-                'user_id' => auth()->guard('customer')->user()->id
-            ]
-        );
+    public function __construct()
+    {
+        $this->cart = Cart::query()->firstOrCreate([
+            'user_id' => auth()->guard('customer')->user()->id
+        ]);
     }
 
     public function add(Request $request)
     {
-        // Validate the request
         $validator = \Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
+            'quantity'   => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) {
@@ -34,47 +32,43 @@ class CartController extends Controller
                 ->withInput();
         }
 
-        // Find the product
         $product = Product::findOrFail($request->product_id);
-        
-        // Check if the product is available
+
         if ($product->stock < $request->quantity) {
             return redirect()->back()->with('error', 'Stok tidak mencukupi untuk produk ini.');
         }
 
         $cartItem = new CartItem([
-            'itemable_id' => $product->id,
+            'itemable_id'   => $product->id,
             'itemable_type' => $product::class,
-            'quantity' => $request->quantity,
+            'quantity'      => $request->quantity,
         ]);
 
         $this->cart->items()->save($cartItem);
 
-        return redirect()->route('cart.index')->with('success', 'Item added to cart.');
+        return redirect()->route('cart.index')->with('success', 'Item berhasil ditambahkan ke keranjang.');
     }
 
     public function remove($id)
     {
+        $cartItem = CartItem::findOrFail($id);
 
-        $product = Product::findOrFail($id);
+        $this->cart->items()->where('id', $cartItem->id)->delete();
 
-        $this->cart->removeItem($product);
-
-        return redirect()->route('cart.index')->with('success', 'Item removed from cart.');
+        return redirect()->route('cart.index')->with('success', 'Item berhasil dihapus dari keranjang.');
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
 
-        $product = Product::findOrFail($id);
+        $cartItem = CartItem::findOrFail($id);
 
-        if($request->action == 'decrease')
-        {
-            $this->cart->decreaseQuantity(item: $product);
-        }else if($request->action == 'increase'){
-            $this->cart->increaseQuantity(item: $product);
-        }
-        
-        return redirect()->route('cart.index')->with('success', 'Cart updated successfully.');
+        $cartItem->quantity = $request->quantity;
+        $cartItem->save();
+
+        return redirect()->route('cart.index')->with('success', 'Jumlah produk berhasil diperbarui.');
     }
 }

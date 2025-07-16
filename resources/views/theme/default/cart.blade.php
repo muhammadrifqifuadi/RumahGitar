@@ -37,12 +37,19 @@
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-inline-flex me-2">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" name="action" value="decrease" class="btn btn-outline-secondary btn-sm" {{ $item->quantity <= 1 ? 'disabled' : '' }}>-</button>
-                                            <input type="text" name="quantity" value="{{ $item->quantity }}" class="form-control form-control-sm text-center mx-1" style="width: 50px;" readonly>
-                                            <button type="submit" name="action" value="increase" class="btn btn-outline-secondary btn-sm">+</button>
-                                        </form>
+    @csrf
+    @method('PATCH')
+
+    @php
+        $decrease = max(1, $item->quantity - 1);
+        $increase = $item->quantity + 1;
+    @endphp
+
+    <button type="submit" name="quantity" value="{{ $decrease }}" class="btn btn-outline-secondary btn-sm" {{ $item->quantity <= 1 ? 'disabled' : '' }}>-</button>
+    <input type="text" value="{{ $item->quantity }}" class="form-control form-control-sm text-center mx-1" style="width: 50px;" readonly>
+    <button type="submit" name="quantity" value="{{ $increase }}" class="btn btn-outline-secondary btn-sm">+</button>
+</form>
+
 
                                         <span class="cart-item-subtotal mb-0 me-3 fw-semibold" style="color: #d4af37;">
                                             Rp.{{ number_format($item->itemable->price * $item->quantity, 0, ',', '.') }}
