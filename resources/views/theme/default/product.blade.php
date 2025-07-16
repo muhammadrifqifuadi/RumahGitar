@@ -74,7 +74,7 @@
             @foreach($relatedProducts as $relatedProduct)
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ $relatedProduct->image_url ?? 'https://via.placeholder.com/350x200?text=No+Image' }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                        <img src="{{ asset('storage/' . ($relatedProduct->image_url ?? 'default-image.jpg')) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $relatedProduct->name }}</h5>
                             <p class="card-text text-truncate">{{ $relatedProduct->description }}</p>
