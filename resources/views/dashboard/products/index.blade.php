@@ -103,9 +103,14 @@
                             </p>
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $product->is_active ? 'Yes' : 'No' }}
-                            </p>
+                            <form action="{{ route('products.toggle', $product->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="px-3 py-1 rounded text-white 
+                                    {{ $product->is_active ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }}">
+                                    {{ $product->is_active ? 'Active' : 'Inactive' }}
+                                </button>
+                            </form>
                         </td>
                         <td>
                             <form id="sync-product-{{ $product->id }}" action="{{ route('products.sync', $product->id) }}" method="POST">

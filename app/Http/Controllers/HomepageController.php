@@ -22,7 +22,8 @@ class HomepageController extends Controller
     public function index()
     {
         $categories = Categories::latest()->take(4)->get();
-        $products = Product::paginate(20);
+        $products = Product::where('is_active', true)->paginate(20);
+
         
         return view($this->themeFolder.'.homepage', [
             'categories' => $categories,
@@ -33,7 +34,8 @@ class HomepageController extends Controller
 
     public function products(Request $request)
     {
-        $query = Product::query();
+        $query = Product::where('is_active', true);
+
 
         if ($request->has('search') && $request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -49,7 +51,9 @@ class HomepageController extends Controller
 
     public function product($slug)
     {
-        $product = Product::whereSlug($slug)->firstOrFail();
+        $product = Product::whereSlug($slug)->where('is_active', true)->first();
+
+        // $product = Product::whereSlug($slug)->firstOrFail();
 
         $relatedProducts = Product::where('product_category_id', $product->product_category_id)
             ->where('id', '!=', $product->id)
@@ -77,7 +81,10 @@ class HomepageController extends Controller
     {
         $category = Categories::whereSlug($slug)->firstOrFail();
 
-        $products = Product::where('product_category_id', $category->id)->paginate(20);
+        $products = Product::where('product_category_id', $category->id)
+                   ->where('is_active', true)
+                   ->paginate(20);
+
 
         return view($this->themeFolder.'.category_by_slug', [
             'slug' => $slug,

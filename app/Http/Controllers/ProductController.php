@@ -171,6 +171,15 @@ class ProductController extends Controller
             ->with('successMessage', 'Data Berhasil Dihapus');
     }
 
+    public function toggle($id)
+        {
+        $product = Product::findOrFail($id);
+        $product->is_active = !$product->is_active;
+        $product->save();
+
+    return redirect()->back()->with('status', 'Produk berhasil diubah!');
+        }
+
     public function sync($id, Request $request)
       {
           $product = Product::findOrFail($id);
