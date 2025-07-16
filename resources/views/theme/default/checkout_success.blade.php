@@ -1,14 +1,16 @@
 <x-layout>
-    <x-slot name="title">Pembelian Berhasil</x-slot>
+    <x-slot name="title">Checkout Sukses</x-slot>
 
-    <div class="container text-center my-5">
-        <div class="alert alert-success" style="font-size: 1.25rem;">
-            <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i><br>
-            Terima kasih! Pembelian Anda berhasil diproses.
-        </div>
+    <div class="container py-5 text-center">
+        <h2 class="text-success">✅ Pesanan Berhasil!</h2>
+        <p class="lead mt-3">Terima kasih telah berbelanja di <strong>Warung Gitar</strong>.</p>
 
-        <a href="{{ route('products') }}" class="btn btn-outline-primary mt-3">
-            <i class="bi bi-shop"></i> Kembali ke Toko
-        </a>
+        @if(session('success'))
+            <div class="alert alert-success mt-3">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <a href="{{ route('home') }}" class="btn btn-primary mt-4">Kembali ke Beranda</a>
     </div>
 </x-layout>

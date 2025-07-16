@@ -29,8 +29,8 @@ Route::get('checkout', [HomepageController::class, 'checkout'])->name('checkout.
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::get('/checkout', [HomepageController::class, 'checkout'])->name('checkout.index');
-Route::post('/checkout', [HomepageController::class, 'processCheckout'])->name('checkout.store');
-Route::get('/checkout/success', [HomepageController::class, 'checkoutSuccess'])->name('checkout.success');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
 
 Route::group(['middleware'=>['is_customer_login']], function(){

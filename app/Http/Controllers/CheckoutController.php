@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
     public function store(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'fullname' => 'required|string|max:255',
             'email' => 'required|email',
@@ -16,15 +16,31 @@ class CheckoutController extends Controller
             'city' => 'required|string',
             'state' => 'required|string',
             'zip' => 'required|string',
-            'cardName' => 'required|string',
-            'cardNumber' => 'required|string',
-            'cardExp' => 'required|string',
-            'cardCvv' => 'required|string',
+            'payment_method' => 'required|string',
         ]);
 
-        // Lakukan logika simpan ke database atau transaksi di sini
-        // Misalnya Order::create($validated);
+        if ($request->payment_method === 'credit_card') {
+            $request->validate([
+                'cardName' => 'required|string',
+                'cardNumber' => 'required|string',
+                'cardExp' => 'required|string',
+                'cardCvv' => 'required|string',
+            ]);
+        }
 
-        return redirect()->route('home')->with('success', 'Pesanan Anda berhasil diproses!');
+        $cart = session('cart');
+
+        if (!$cart || !isset($cart['items']) || count($cart['items']) == 0) {
+            return redirect()->back()->with('error', 'Keranjang kosong.');
+        }
+
+        session()->forget('cart');
+
+        return redirect()->route('checkout.success')->with('success', 'Pesanan Anda berhasil diproses!');
+    }
+
+    public function success()
+    {
+        return view('checkout_success');
     }
 }
